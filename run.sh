@@ -1,11 +1,13 @@
 #!/bin/bash
 
 alter_the_conf(){
-  local target_hostname="$1"
+  local target_url="$1"
 
+  # using delimiter '|' instead of '/' to prevent problems with 
+  # protocol delimiter 'https://'
   sed \
     --in-place='' \
-    --expression="s/proxy-target.bikes/$target_hostname/g" \
+    --expression="s|replace-me|$target_url|g" \
     /etc/nginx/nginx.conf
 }
 
@@ -25,8 +27,12 @@ main(){
   assert_env
 
   local target_hostname="$TARGET_HOSTNAME"
+  local target_protocol="${TARGET_PROTOCOL:-https}"
+  local target_url="${target_protocol}://${target_hostname}"
 
-  alter_the_conf "$target_hostname" \
+  echo "Redirecting all traffic to '$target_url'"
+
+  alter_the_conf "$target_url" \
   && run_the_server
 }
 main "$@"
