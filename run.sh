@@ -3,7 +3,7 @@
 alter_the_conf(){
   local target_url="$1"
 
-  # using delimiter '|' instead of '/' to prevent problems with 
+  # using delimiter '|' instead of '/' to prevent problems with
   # protocol delimiter 'https://'
   sed \
     --in-place='' \
