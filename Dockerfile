@@ -1,7 +1,7 @@
 FROM nginx
 MAINTAINER Octoblu, Inc. <docker@octoblu.com>
 
-COPY run.sh /
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY . /etc/nginx/
+RUN ["mv", "/etc/nginx/run.sh", "/run.sh"]
 
 CMD ["./run.sh"]
