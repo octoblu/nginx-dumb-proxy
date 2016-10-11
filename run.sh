@@ -1,13 +1,19 @@
 #!/bin/bash
 
 alter_the_conf(){
-  local target_url="$1"
+  local target_protocol="$1"
+  local target_hostname="$2"
 
   # using delimiter '|' instead of '/' to prevent problems with
-  # protocol delimiter 'https://'
+  # path delimiter 'foo.com/whatever'
   sed \
     --in-place='' \
-    --expression="s|replace-me|$target_url|g" \
+    --expression="s|target_protocol|$target_protocol|g" \
+    /etc/nginx/nginx.conf
+
+  sed \
+    --in-place='' \
+    --expression="s|target_hostname|$target_hostname|g" \
     /etc/nginx/nginx.conf
 }
 
@@ -32,7 +38,7 @@ main(){
 
   echo "Redirecting all traffic to '$target_url'"
 
-  alter_the_conf "$target_url" \
+  alter_the_conf "$target_protocol" "$target_hostname" \
   && run_the_server
 }
 main "$@"
