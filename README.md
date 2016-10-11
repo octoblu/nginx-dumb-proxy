@@ -14,7 +14,7 @@ docker run \
   --interactive \
   --tty \
   --env TARGET_HOSTNAME=foo.example.com \
-  octoblu/nginx-dumb-proxy:v1.0.0
+  octoblu/nginx-dumb-proxy:v1.x.x
 ```
 
 ## TODO
