@@ -18,8 +18,8 @@ alter_the_conf(){
 }
 
 assert_env(){
-  if [ -z "$TARGET_HOSTNAME" ]; then
-    echo 'Missing required env: TARGET_HOSTNAME' 2>&1
+  if [ -z "$NGINX_DUMB_PROXY_TARGET_HOSTNAME" -a -z "$TARGET_HOSTNAME" ]; then
+    echo 'Missing required env: NGINX_DUMB_PROXY_TARGET_HOSTNAME' 2>&1
     exit 1
   fi
 }
@@ -32,9 +32,11 @@ run_the_server(){
 main(){
   assert_env
 
-  local target_hostname="$TARGET_HOSTNAME"
-  local target_protocol="${TARGET_PROTOCOL:-https}"
-  local target_url="${target_protocol}://${target_hostname}"
+  local target_hostname target_protocol target_url
+
+  target_hostname="${NGINX_DUMB_PROXY_TARGET_HOSTNAME:-$TARGET_HOSTNAME}"
+  target_protocol="${NGINX_DUMB_PROXY_TARGET_PROTOCOL:-${TARGET_PROTOCOL:-https}}"
+  target_url="${target_protocol}://${target_hostname}"
 
   echo "Redirecting all traffic to '$target_url'"
 
